@@ -28,8 +28,21 @@ const store = new Vuex.Store({
     incrementObj(state,obj){/**可以传入额外的参数(载荷,可以为对象)，调用方法store.commit(type,n)*/
       state.count += obj.amount;
     }
+  },
+  // actions:{
+  //   increment (context) {
+  //     context.commit('increment')
+  //   }
+  // }
+  actions: {
+    incrementAsync ({ commit }) {
+      setTimeout(() => {
+        commit('increment')
+      }, 1000)
+    }
   }
 });
 export default store
-// store.commit('increment');
-// console.log(store.getters.doneTodos)
+// store.commit('increment'); //同步操作
+// //Action 通过 store.dispatch 方法触发：
+store.dispatch('incrementAsync') //异步操作
