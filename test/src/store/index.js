@@ -42,10 +42,56 @@ Vue.use(Vuex);
 //     }
 //   }
 // });
-const store = new Vuex.Store({
-  
-})
-export default store
+// alert(process.env.NODE_ENV)//develop
+
+// const store = new Vuex.Store({
+//   // strict:true, //开启严格模式
+//   // strict: process.env.NODE_ENV !== 'prodution',
+//   state:{
+//     obj:{message:1}
+//   },
+//   mutations:{
+//     updateMessage (state, message) {
+//       state.obj.message = message
+//     }
+//   }
+// });
+// export default store
 // store.commit('increment'); //同步操作
 // //Action 通过 store.dispatch 方法触发：
-store.dispatch('incrementAsync') //异步操作
+// store.dispatch('incrementAsync') //异步操作
+
+/**便于测试**/
+const state = {
+  obj:{message:1}
+};
+const getters = {};
+const mutations = {
+  updateMessage (state, message) {
+    state.obj.message = message
+  }
+};
+
+export default new Vuex.Store({
+  state,
+  getters,
+  mutations
+})
+
+if (module.hot) {//热重载
+  console.log(module.hot);
+  // 使 action 和 mutation 成为可热重载模块
+  module.hot.accept([mutations], () => {
+    // 获取更新后的模块
+    // 因为 babel 6 的模块编译格式问题，这里需要加上 `.default`
+    const newMutations = require(mutations).default;
+    // const newModuleA = require('./modules/a').default
+    // 加载新模块
+    store.hotUpdate({
+      mutations: newMutations,
+      modules: {
+        // a: newModuleA
+      }
+    })
+  })
+}
