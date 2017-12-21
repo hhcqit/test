@@ -8,7 +8,7 @@
     <h3>
       this.$store.commit('increment',10);<button @click="increment">count+=10</button>
       <br>
-      this.$store.commit({type:'incrementObj',amount:10}); <button @click="incrementObj">count+=10</button>
+      this.$store.commit({type:'incrementObj',amount:-10}); <button @click="incrementObj({amount:-10})">count-=10</button>
     </h3>
     <h3>{{query}}</h3>
     <!--<h3>-->
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import {mapState} from 'Vuex'
+  import {mapState} from 'vuex'
   import { mapGetters } from 'vuex'
 export default {
   name: 'HelloWorld',
@@ -68,8 +68,8 @@ export default {
     increment:function () {
       this.$store.commit('increment',10);
     },
-    incrementObj:function () {
-      this.$store.commit({type:'incrementObj',amount:10});
+    incrementObj:function (obj) {
+        this.$store.commit({type:'incrementObj',...obj});
     }
   }
 }
